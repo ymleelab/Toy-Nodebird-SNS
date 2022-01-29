@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useCallback, useState } from 'react';
-import { Form, Input, Checkbox } from 'antd';
+import { Form, Input, Checkbox, Button } from 'antd';
 import styled from 'styled-components';
 
 import AppLayout from "../components/AppLayout";
@@ -22,7 +22,8 @@ const signup = () => {
         setPasswordError(e.target.value !== password);
     }, [password]);
     
-    const [term, onChangeTerm] = useState('');
+    const [term, setTerm] = useState('');
+    const [termError, setTermError] = useState(false);
     const onChangeTerm = useCallback((e) => {
         setTerm(e.target.checked);
         setTermError(false);
@@ -39,7 +40,7 @@ const signup = () => {
     },[password, passwordCheck, term]);
 
     return (
-        <>
+        <AppLayout>
             <Head>
                 <title>회원가입 | NodeBird</title>
             </Head>
@@ -52,7 +53,7 @@ const signup = () => {
                 <div>
                     <label htmlFor='user-nick'>닉네임</label>
                     <br />
-                    <Input name="user-nick" value={nick} required onChange={onChangenick} />
+                    <Input name="user-nick" value={nickname} required onChange={onChangeNickName} />
                 </div>
                 <div>
                     <label htmlFor='user-password'>비밀번호</label>
@@ -76,11 +77,10 @@ const signup = () => {
                     {termError && <ErrorMessage>약관에 동의하셔야 합니다.</ErrorMessage>}
                 </div>
                 <div style={{ marginTop: 10 }}>
-                    <Botton type="primary" htmlType="submit">가입하기</Botton>
+                    <Button type="primary" htmlType="submit">가입하기</Button>
                 </div>
             </Form>
-            <AppLayout>회원가입</AppLayout>
-        </>
+        </AppLayout>
     );
 };
 
