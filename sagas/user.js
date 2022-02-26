@@ -1,7 +1,8 @@
 import { all, fork, put, takeLatest, delay } from 'redux-saga/effects';
 import { 
     LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, 
-    LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE } from '../reducers/user';
+    LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE,
+    SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE } from '../reducers/user';
 
 function logInAPI(data) {
     return axios.post('/api/login', data)
@@ -40,6 +41,26 @@ function* logOut() {
         });
     }
 }
+function signUpAPI() {
+    return axios.post('/api/signUp'); 
+}
+
+function* signUp() {
+    try {
+        // const result = yield call(signUpAPI);
+        yield delay(1000);
+        yield put({
+          type: SIGN_UP_SUCCESS,
+        });
+      } catch (err) {
+        yield put({
+          type: SIGN_UP_FAILURE,
+          error: err.response.data,
+        });
+    }
+}
+    
+
 
 //yield throttle('ADD_POST_REQUEST', addPost, 2000); 
 //throttle : 마지막 함수가 호출된 후 일정 시간동안 제한 (클릭 여러번, 스크롤)
@@ -51,10 +72,14 @@ function* watchLogIn() {
 function* watchLogOut() {
     yield takeLatest(LOG_OUT_REQUEST, logOut);
 }
+function* watchSignUp() {
+    yield takeLatest(SIGN_UP_REQUEST, signUp);    
+}
 
 export default function* userSaga() {
     yield all([
         fork(watchLogIn), //fork : 비동기 함수 호출
         fork(watchLogOut),
+        fork(watchSignUp),
     ])
 }

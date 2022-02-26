@@ -10,6 +10,9 @@ export const initialState = {
     logOutLoading: false, // 로그아웃 시도중
     logOutDone: false,
     logOutError: null,
+    signUpLoading: false, // 회원가입 시도중
+    signUpDone: false,
+    signUpError: null,
     me: null,
     signUpData: {},
     loginData: {}
@@ -133,6 +136,26 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 logOutLoading: false,
                 logOutError: action.error,
+            };
+        case SIGN_UP_REQUEST:
+            return {
+                ...state,
+                signUPLoading: true,
+                signUPDone: false,
+                signUPError: null,
+            };
+        case SIGN_UP_SUCCESS:
+            return {
+                ...state,
+                signUPLoading: false,
+                signUPDone: false,
+                me: null,
+            };
+        case SIGN_UP_FAILURE:
+            return {
+                ...state,
+                signUPLoading: false,
+                signUPError: action.error,
             };
         default:
             return state;
